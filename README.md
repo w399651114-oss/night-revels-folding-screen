@@ -6,7 +6,7 @@
 
 ![全卷实景渲染，自右向左依次为听乐、观舞、暂歇、清吹与散宴](renders/overview.png)
 
-**[下载可编辑工程](scene/night-revels.blend)** · [场景说明与证据](docs/场景与证据.md) · [完整测试提示词](docs/提示词原文.txt) · [测量报告](docs/measurements.json) · [素材与许可](docs/素材与许可.md)
+**[下载可编辑工程](scene/night-revels.blend)** · [场景说明与证据](docs/场景与证据.md) · [完整测试提示词](docs/提示词原文.txt) · [测量报告](docs/measurements.json) · [远端克隆复现记录](docs/复现记录.md) · [素材与许可](docs/素材与许可.md)
 
 ## 先看两个切片
 
