@@ -1,0 +1,82 @@
+{
+  "blender": "5.2.4 LTS",
+  "seed": 963,
+  "objects": 877,
+  "types": {
+    "MESH": 684,
+    "EMPTY": 51,
+    "CURVE": 120,
+    "LIGHT": 15,
+    "CAMERA": 7
+  },
+  "collections": {
+    "Sections": 18,
+    "Screens": 153,
+    "Furniture": 399,
+    "Characters": 90,
+    "Props": 188,
+    "Lights": 17,
+    "GapCorridor": 5,
+    "StudyViews": 7
+  },
+  "characters_by_section": [
+    11,
+    8,
+    8,
+    9,
+    7
+  ],
+  "characters": 43,
+  "depth_bands": {
+    "1": 33,
+    "2": 150,
+    "3": 233,
+    "4": 140,
+    "5": 121
+  },
+  "relief_triangles": 20250,
+  "materials": [
+    "乌漆 · 抛光",
+    "墨线",
+    "宋摹本 · 原卷彩墨 UV",
+    "小侍·听乐 · 推定下裳",
+    "持杖随从 · 推定下裳",
+    "斑竹与丝弦",
+    "旧铜 · 铰链包角",
+    "朱砂漆",
+    "深褐绢帛 · 地经纬",
+    "烛芯发光",
+    "烛雾 · 稀薄均质",
+    "石绿经锦",
+    "米白锦褥",
+    "素绢 · 暖赭",
+    "紫褐髹木 · 顺纹",
+    "绛红绫",
+    "绢色虚空",
+    "近屏青衣宾客 · 推定下裳",
+    "青瓷 · 温润釉面",
+    "青衣宾客·拱手 · 推定下裳"
+  ],
+  "packed_image_bytes": 8670294,
+  "dimensions_m": [
+    29.4,
+    4.4
+  ],
+  "gap_length_m": 3.3,
+  "depth_extent_m": 3.304,
+  "screen_heights_m": [
+    2.2,
+    2.2,
+    2.2,
+    2.2
+  ],
+  "route_clear_width_lower_bound_m": 0.92,
+  "eye_height_m": 1.59,
+  "screen_sightline_hit": [
+    0.8612,
+    "屏心 · 山水绢本.002"
+  ],
+  "side_sightline_hit": null,
+  "figure_furniture_surface_crossings": 0,
+  "geometry_sha256": "867e0094abb94c72ecc802a797adf6eee96801ddfd4252b830ce006f1d71ea5f"
+}
