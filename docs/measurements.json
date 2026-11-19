@@ -1,13 +1,13 @@
 {
   "blender": "5.2.4 LTS",
   "seed": 963,
-  "objects": 877,
+  "objects": 881,
   "types": {
     "MESH": 684,
     "EMPTY": 51,
     "CURVE": 120,
     "LIGHT": 15,
-    "CAMERA": 7
+    "CAMERA": 11
   },
   "collections": {
     "Sections": 18,
@@ -17,7 +17,7 @@
     "Props": 188,
     "Lights": 17,
     "GapCorridor": 5,
-    "StudyViews": 7
+    "StudyViews": 11
   },
   "characters_by_section": [
     11,
@@ -63,6 +63,15 @@
     4.4
   ],
   "gap_length_m": 3.3,
+  "mallets_and_drum_shift_m": [
+    0.5,
+    0.5,
+    0.0
+  ],
+  "walk_clear_radius_lower_bound_m": {
+    "screen": 0.5,
+    "gap": 0.5
+  },
   "depth_extent_m": 3.304,
   "screen_heights_m": [
     2.2,
@@ -78,5 +87,5 @@
   ],
   "side_sightline_hit": null,
   "figure_furniture_surface_crossings": 0,
-  "geometry_sha256": "867e0094abb94c72ecc802a797adf6eee96801ddfd4252b830ce006f1d71ea5f"
+  "geometry_sha256": "70276f40c6e2124ef35ac00df9280e4771a4a2aa01620a276ebdc1659857beb3"
 }

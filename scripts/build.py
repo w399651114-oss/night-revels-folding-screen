@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 args = argparse.ArgumentParser()
 args.add_argument("--out", type=Path, default=ROOT / "scene/night-revels.blend")
 args.add_argument("--stage-only", action="store_true")
+args.add_argument("--gap-length", choices=(3.30, 1.10), type=float, default=3.30)
 opt = args.parse_args(sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else [])
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene = bpy.context.scene
@@ -45,6 +46,12 @@ C = {
 }
 events = ["听乐", "观舞", "暂歇", "清吹", "散宴"]
 zones = [(8.6, 14.7), (3.05, 8.6), (-1.55, 3.05), (-7.05, -1.55), (-14.7, -10.35)]
+delta = round(3.30 - opt.gap_length, 2)
+gap_entry = -7.05
+gap_exit = round(gap_entry - opt.gap_length, 2)
+stage_length = 29.4 - delta
+zones[-1] = (-14.7 + delta, gap_exit)
+scene["gap_length_m"] = opt.gap_length
 groups = {
     s: [collection(f"{i + 1:02d} · {e} · {s}", C[s]) for i, e in enumerate(events)]
     for s in ("Characters", "Furniture", "Props")
@@ -217,9 +224,9 @@ def uvmap(o, coords):
 
 box(
     C["Sections"],
-    "长卷基面 · 29.40 × 4.40",
-    (0, 0, -0.066),
-    (29.4, 4.4, 0.132),
+    f"长卷基面 · {stage_length:.2f} × 4.40",
+    (delta / 2, 0, -0.066),
+    (stage_length, 4.4, 0.132),
     floor,
     0.035,
 )
@@ -227,17 +234,21 @@ for side in [-1, 1]:
     box(
         C["Sections"],
         "绢缘 · 缝线",
-        (0, side * 2.17, 0.001),
-        (29.34, 0.012, 0.002),
+        (delta / 2, side * 2.17, 0.001),
+        (stage_length - 0.06, 0.012, 0.002),
         bamboo,
         0.0004,
     )
 for i, (lo, hi) in enumerate(zones):
     marker = empty(C["Sections"], f"{i + 1:02d} {events[i]}", ((lo + hi) / 2, 0, 0))
     marker["x_limits_m"] = [lo, hi]
-gap = empty(C["GapCorridor"], "时间间隙 · 3.30 m", (-8.70, 0, 0))
-gap["x_limits_m"] = [-10.35, -7.05]
-for x in [-10.35, -7.05]:
+gap = empty(
+    C["GapCorridor"],
+    f"时间间隙 · {opt.gap_length:.2f} m",
+    ((gap_entry + gap_exit) / 2, 0, 0),
+)
+gap["x_limits_m"] = [gap_exit, gap_entry]
+for x in [gap_exit, gap_entry]:
     empty(C["GapCorridor"], "留白阈线", (x, -2.2, 0))
 
 
@@ -292,7 +303,7 @@ def screen(name, x, y, widths, angles, landscape=True):
 screen("一 · 听乐转观舞 · 三折障景", 8.60, -0.91, [0.97, 1.03, 1.01], [75, 108, 76])
 screen("二 · 观舞转暂歇", 3.05, 0.05, [1.00, 0.97], [82, 103])
 screen("三 · 暂歇转清吹 · 独扇座屏", -1.55, 0.29, [1.48], [85], False)
-screen("四 · 留白出口 · 独扇山水", -10.75, 0.25, [1.57], [94])
+screen("四 · 留白出口 · 独扇山水", -10.75 + delta, 0.25, [1.57], [94])
 box(C["Lights"], "无界绢色承影面", (0, 0, -0.205), (200, 200, 0.12), ground, 0.01)
 
 
@@ -390,11 +401,20 @@ camera("04 · 留白间隙", (-6.60, -1.48, 1.59), (-11.7, -0.08, 0.80), 27)
 camera("05 · 听乐近观", (10.65, -5.75, 2.15), (11.78, 0.44, 1.00), 42)
 camera("06 · 清吹合奏", (-5.85, -5.10, 1.85), (-4.86, 0.35, 1.05), 45)
 camera("07 · 案头与围榻", (11.48, -2.08, 1.16), (12.12, -0.62, 0.70), 46)
+camera("08 · 暂歇净手", (0.55, -4.65, 1.88), (0.52, 0.55, 1.04), 42)
+camera("09 · 散宴送客", (-12.02 + delta, -5.74, 1.93), (-12.50 + delta, 0.48, 0.95), 44)
 scene.camera = cam
 if not opt.stage_only:
     exec(compile((ROOT / "scripts/ensemble.py").read_text(), "ensemble.py", "exec"))
 if not opt.stage_only:
     exec(compile((ROOT / "scripts/textiles.py").read_text(), "textiles.py", "exec"))
+# The fifth ensemble was traced in the main study coordinate system. Its
+# screen, lights, trims and candle group are constructed from the variant limits.
+if delta and not opt.stage_only:
+    for kind in ("Characters", "Furniture", "Props"):
+        for ob in groups[kind][4].objects:
+            if ob.parent is None and ob.name not in farewell_candles:
+                ob.location.x += delta
 # Apply the same five depth labels to event props, furniture and painted layers.
 bpy.context.view_layer.update()
 for group in ("Characters", "Props", "Furniture"):
@@ -430,7 +450,11 @@ for area in bpy.context.screen.areas:
 for i, c in enumerate(sorted(C["StudyViews"].objects, key=lambda o: o.name)):
     marker = scene.timeline_markers.new(c.name, frame=1 + i * 24)
     marker.camera = c
-scene.frame_end = 145
+from walks import add_walks
+
+add_walks(scene, camera)
+scene.render.resolution_x, scene.render.resolution_y = 1320, 820
+scene.render.fps = 24
 scene.frame_set(1)
 # Factory Shading workspace stores the maker's home as a file-browser path.
 for screen_layout in bpy.data.screens:

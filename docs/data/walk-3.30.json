@@ -1,0 +1,77 @@
+{
+  "grid": [
+    330,
+    205
+  ],
+  "fps": 24,
+  "speed_m_s": 1.0,
+  "eye_z_m": 1.59,
+  "gap_m": 3.3,
+  "screen_views_on_off": {
+    "25": {
+      "dancer": [
+        623,
+        623
+      ],
+      "drummer": [
+        0,
+        599
+      ]
+    },
+    "49": {
+      "dancer": [
+        2740,
+        2740
+      ],
+      "drummer": [
+        4003,
+        4003
+      ]
+    }
+  },
+  "entry": {
+    "exact_seconds": 0.5,
+    "sample": {
+      "frame": 349,
+      "seconds": 0.5,
+      "x_m": -7.05,
+      "hits": 138
+    }
+  },
+  "exit": {
+    "exact_seconds": 3.8,
+    "sample": {
+      "frame": 429,
+      "seconds": 3.8333,
+      "x_m": -10.38333,
+      "hits": 1951
+    }
+  },
+  "first_samples_by_min_hits": {
+    "1": {
+      "frame": 337,
+      "seconds": 0.0,
+      "x_m": -6.55,
+      "hits": 139
+    },
+    "170": {
+      "frame": 365,
+      "seconds": 1.1667,
+      "x_m": -7.71667,
+      "hits": 186
+    },
+    "508": {
+      "frame": 391,
+      "seconds": 2.25,
+      "x_m": -8.8,
+      "hits": 509
+    },
+    "677": {
+      "frame": 399,
+      "seconds": 2.5833,
+      "x_m": -9.13333,
+      "hits": 701
+    }
+  },
+  "first_drummer_on_screen_walk": 239
+}

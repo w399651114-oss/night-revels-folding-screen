@@ -165,6 +165,7 @@ table(groups["Furniture"][2], "净手小几", 1.39, -0.62, 0.71, 0.46, 0.54)
 table(groups["Furniture"][4], "余席矮几", -13.17, -0.56, 0.83, 0.49, 0.46)
 
 people = json.loads((ROOT / "assets/figures.json").read_text())
+figure_ids = json.loads((ROOT / "assets/figure-ids.json").read_text())
 anchors = {}
 offsets = [3580, 2750, 2115, 1000, 0]
 
@@ -196,6 +197,7 @@ def make_person(rec):
     o.rotation_euler.z = math.radians(yaw)
     o["role"] = "figure"
     o["section"] = sec
+    o["source_id"] = figure_ids[name]
     o["evidence"] = "L1 正面图像 / H 纵深尺度"
     pts = [Vector(p) for p in rec["outline"]]
     left = min(p.x for p in pts)
@@ -233,6 +235,7 @@ def make_person(rec):
     faces = [tuple(remap[idx] for idx in face) for face in faces]
     body = mesh(c, name + " · 彩墨浅浮雕", [vertex(*p) for p in points], faces, paint)
     body.parent = o
+    body["source_id"] = figure_ids[name]
     uvmap(body, points)
     for f in body.data.polygons:
         f.use_smooth = True
@@ -484,7 +487,7 @@ for j in range(24):
         )
 root, at = anchors["韩熙载·击鼓"]
 for u, v in [(585, 99), (617, 140)]:
-    rod(
+    mallet = rod(
         c,
         "击鼓槌",
         at(u, v, 0.035),
@@ -493,6 +496,9 @@ for u, v in [(585, 99), (617, 140)]:
         wood,
         0.014,
     )
+    mallet.parent = root
+    mallet.matrix_parent_inverse = root.matrix_world.inverted()
+    mallet["figure"] = root.name
 regrod("韩熙载·持槌送客", "散宴手槌", (308, 201), (387, 150), 0.008, wood)
 
 
@@ -605,6 +611,7 @@ lathe(
     64,
 )
 # Pool of light is offset from the main route.
+farewell_candles = set()
 flame = material("烛芯发光", (0.99, 0.45, 0.10))
 p = flame.node_tree.nodes.get("Principled BSDF")
 p.inputs["Emission Color"].default_value = (1, 0.34, 0.065, 1)
@@ -613,6 +620,7 @@ for i, (lo, hi) in enumerate(zones):
     x = lo + 0.37
     y = 1.83
     c = groups["Props"][i]
+    before_candles = set(c.objects)
     lathe(
         c,
         "灯座",
@@ -638,3 +646,6 @@ for i, (lo, hi) in enumerate(zones):
         flame,
     )
     light("烛光 " + events[i], "POINT", (x, y, 1.04), 14, (1, 0.45, 0.14), 0.09)
+
+    if i == 4:
+        farewell_candles = {ob.name for ob in set(c.objects) - before_candles}

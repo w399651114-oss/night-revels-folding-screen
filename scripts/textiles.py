@@ -115,7 +115,7 @@ for i, (lo, hi) in enumerate(zones):
             mulberry if i % 2 == 0 else teal,
             0.001,
         )
-for x in [-10.354, -7.046]:
+for x in [gap_exit - 0.004, gap_entry + 0.004]:
     box(
         C["GapCorridor"], "素绢接缝", (x, 0, 0.0015), (0.006, 4.30, 0.003), silk, 0.0006
     )
